@@ -1,8 +1,44 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useTranslation } from '../../i18n/useTranslation';
 import { GUIDE_SECTIONS } from '../../lib/guide/navigation';
 
 export default function Guide() {
+  const { t, isEnglish } = useTranslation();
+
+  const sections = [
+    { 
+      key: 'quickStart', 
+      href: '/guide/quick-start',
+      icon: '⚡',
+      color: '#3b82f6'
+    },
+    { 
+      key: 'chatgpt', 
+      href: '/guide/chatgpt',
+      icon: '💬',
+      color: '#10b981'
+    },
+    { 
+      key: 'claude', 
+      href: '/guide/claude',
+      icon: '🧠',
+      color: '#8b5cf6'
+    },
+    { 
+      key: 'chinese', 
+      href: '/guide/chinese',
+      icon: '🐉',
+      color: '#f59e0b'
+    },
+    { 
+      key: 'faq', 
+      href: '/guide/faq',
+      icon: '❓',
+      color: '#ef4444'
+    },
+  ];
+
   return (
     <div style={{ 
       minHeight: '100vh', 
@@ -11,7 +47,7 @@ export default function Guide() {
       color: '#fff',
     }}>
       <Head>
-        <title>教程 - MemoryMigrator</title>
+        <title>{t('guide.title')} - MemoryMigrator</title>
       </Head>
 
       {/* Header */}
@@ -25,21 +61,22 @@ export default function Guide() {
         <Link href="/" style={{ color: '#fff', textDecoration: 'none', fontSize: '20px', fontWeight: 'bold' }}>
           🐋 MemoryMigrator
         </Link>
-        <nav style={{ display: 'flex', gap: '24px' }}>
-          <Link href="/" style={{ color: '#666', textDecoration: 'none' }}>首页</Link>
-          <Link href="/guide" style={{ color: '#3b82f6', textDecoration: 'none' }}>教程</Link>
-          <Link href="/pricing" style={{ color: '#666', textDecoration: 'none' }}>定价</Link>
-          <Link href="/upload" style={{ color: '#666', textDecoration: 'none' }}>上传</Link>
+        <nav style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+          <Link href="/" style={{ color: '#666', textDecoration: 'none' }}>{t('nav.home')}</Link>
+          <Link href="/guide" style={{ color: '#3b82f6', textDecoration: 'none' }}>{t('nav.guide')}</Link>
+          <Link href="/pricing" style={{ color: '#666', textDecoration: 'none' }}>{t('nav.pricing')}</Link>
+          <Link href="/upload" style={{ color: '#666', textDecoration: 'none' }}>{t('nav.upload')}</Link>
+          <LanguageToggle />
         </nav>
       </header>
 
       {/* Main Content */}
       <main style={{ maxWidth: '800px', margin: '0 auto', padding: '60px 20px' }}>
         <h1 style={{ fontSize: '40px', marginBottom: '16px', textAlign: 'center' }}>
-          📖 教程中心
+          📖 {t('guide.title')}
         </h1>
         <p style={{ fontSize: '18px', color: '#888', textAlign: 'center', marginBottom: '48px' }}>
-          一步一步教你完成 AI 对话导出
+          {t('guide.description')}
         </p>
 
         {/* Quick Start Card */}
@@ -53,19 +90,21 @@ export default function Guide() {
             cursor: 'pointer',
           }}>
             <h2 style={{ fontSize: '24px', marginBottom: '8px', color: '#3b82f6' }}>
-              ⚡ 快速开始
+              ⚡ {t('guide.quickStart')}
             </h2>
-            <p style={{ color: '#888' }}>3分钟完成整个流程，适合第一次使用</p>
+            <p style={{ color: '#888' }}>
+              {isEnglish ? '3 minutes to complete the entire process, suitable for first-time users' : '3分钟完成整个流程，适合第一次使用'}
+            </p>
           </div>
         </Link>
 
         {/* Platform Tutorials */}
         <h2 style={{ fontSize: '24px', marginBottom: '20px', marginTop: '40px' }}>
-          各平台教程
+          {isEnglish ? 'Platform Tutorials' : '各平台教程'}
         </h2>
         
         <div style={{ display: 'grid', gap: '16px' }}>
-          {GUIDE_SECTIONS.slice(1, 5).map((section, index) => (
+          {sections.slice(1, 4).map((section, index) => (
             <Link 
               key={index}
               href={section.href} 
@@ -79,10 +118,10 @@ export default function Guide() {
                 cursor: 'pointer',
               }}>
                 <h3 style={{ fontSize: '18px', marginBottom: '8px', color: '#fff' }}>
-                  {section.title}
+                  {section.icon} {t(`guide.${section.key}`)}
                 </h3>
                 <p style={{ color: '#666', fontSize: '14px' }}>
-                  {section.description}
+                  {t(`guide.${section.key}`)}
                 </p>
               </div>
             </Link>
@@ -99,10 +138,10 @@ export default function Guide() {
             border: '1px solid #333',
           }}>
             <h3 style={{ fontSize: '18px', marginBottom: '8px', color: '#fff' }}>
-              ❓ 常见问题
+              ❓ {t('guide.faq')}
             </h3>
             <p style={{ color: '#666', fontSize: '14px' }}>
-              遇到问题了？看看这里有没有答案
+              {isEnglish ? 'Have questions? Check the FAQ for answers' : '遇到问题了？看看这里有没有答案'}
             </p>
           </div>
         </Link>
@@ -116,7 +155,7 @@ export default function Guide() {
           textAlign: 'center'
         }}>
           <p style={{ color: '#888', marginBottom: '16px' }}>
-            还是不会？联系我们
+            {isEnglish ? 'Still need help?' : '还是不会？联系我们'}
           </p>
           <Link href="/upload" style={{
             background: '#3b82f6',
@@ -126,10 +165,32 @@ export default function Guide() {
             textDecoration: 'none',
             display: 'inline-block'
           }}>
-            尝试上传 →
+            {t('common.tryNow')} →
           </Link>
         </div>
       </main>
     </div>
+  );
+}
+
+// Simple inline language toggle for now
+function LanguageToggle() {
+  const { language, changeLanguage } = useTranslation();
+  
+  return (
+    <button
+      onClick={() => changeLanguage(language === 'en' ? 'zh' : 'en')}
+      style={{
+        background: '#252525',
+        border: '1px solid #444',
+        borderRadius: '6px',
+        padding: '6px 12px',
+        color: '#fff',
+        cursor: 'pointer',
+        fontSize: '14px',
+      }}
+    >
+      {language === 'en' ? '🇺🇸 EN' : '🇨🇳 中文'}
+    </button>
   );
 }
