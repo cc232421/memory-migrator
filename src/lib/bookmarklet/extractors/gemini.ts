@@ -37,7 +37,7 @@ function extractMessageContent(msg: any): string {
     return msg;
   }
   
-  if (msg.candidates) {
+  if (msg.candidates && msg.candidates.length > 0) {
     // Gemini wrapped format
     const candidate = msg.candidates[0];
     if (candidate?.content?.parts) {
@@ -86,7 +86,7 @@ function parseConversation(convId: string, convData: any): GeminiConversation {
     }
     
     messages.push({
-      id: msg.id || msg.messageId || `msg_${Math.random().toString(36).substr(2, 9)}`,
+      id: msg.id || msg.messageId || `msg_${Math.random().toString(36).substring(2, 11)}`,
       role: role === 'model' ? 'model' : 'user',
       content,
       timestamp: msg.createdAt || msg.timestamp || Date.now(),
@@ -133,7 +133,7 @@ export function extractGemini(data: Record<string, string>): GeminiExtractResult
           : parsed.conversations || parsed.chats || [parsed];
         
         for (const conv of convList) {
-          const convId = conv.id || conv.conversationId || `conv_${Math.random().toString(36).substr(2, 9)}`;
+          const convId = conv.id || conv.conversationId || `conv_${Math.random().toString(36).substring(2, 11)}`;
           conversations.push(parseConversation(convId, conv));
         }
       }
@@ -182,7 +182,7 @@ export function isGeminiFormat(data: Record<string, string>): boolean {
 /**
  * Create mock Gemini data for testing
  */
-export function createMockGeminiData(): Record<string, string> {
+export function createMockGeminiData(): string {
   return JSON.stringify({
     conversations: [
       {

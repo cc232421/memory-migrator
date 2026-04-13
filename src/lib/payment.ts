@@ -25,7 +25,7 @@ export interface PaymentResult {
 
 // Default configuration
 export const DEFAULT_PAYMENT_CONFIG: PaymentConfig = {
-  priceId: process.env.STRIPE_PRICE_ID || 'price_default',
+  priceId: 'price_default',
   priceAmount: 500, // $5.00
   currency: 'usd',
   productName: 'MemoryMigrator - Single Export',

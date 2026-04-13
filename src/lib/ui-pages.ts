@@ -47,7 +47,7 @@ export const PAGES: Record<string, PageConfig> = {
 // Pricing configuration with i18n
 export const PRICING: PricingInfo = {
   price: 500, // $5.00
-  priceId: process.env.STRIPE_PRICE_ID || 'price_default',
+  priceId: 'price_default',
   features: [
     'Export ChatGPT conversations',
     'Export Claude conversations',

@@ -95,7 +95,8 @@ function createCoreScript(): string {
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
-  a.download = 'ai-history-' + platform + '-' + new Date().toISOString().slice(0,10) + '.json';
+  var safePlatform = platform.replace(/[^a-z0-9]/gi, '_');
+  a.download = 'ai-history-' + safePlatform + '-' + new Date().toISOString().slice(0,10) + '.json';
   a.style.display = 'none';
   document.body.appendChild(a);
   a.click();
@@ -163,6 +164,15 @@ export function generateAllPlatformBookmarklets(): Array<{ platform: Platform; t
   }));
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /**
  * Create HTML for bookmarklet links
  */
@@ -174,7 +184,7 @@ export function createBookmarkletHTML(): string {
   html += '<ul>';
   
   for (const bm of bookmarklets) {
-    html += `<li><a href="${bm.href}" title="${bm.title}">${bm.title}</a></li>`;
+    html += `<li><a href="${escapeHtml(bm.href)}" title="${escapeHtml(bm.title)}">${escapeHtml(bm.title)}</a></li>`;
   }
   
   html += '</ul>';

@@ -20,11 +20,11 @@ export default function Home() {
     setMounted(true);
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('m_memory_locale');
-      const lang = (saved === 'en' || saved === 'zh') ? saved : 'en';
+      const lang: Language = (saved === 'en' || saved === 'zh') ? saved : 'en';
       
       // Also check browser language
       const browserLang = navigator.language?.startsWith('zh') ? 'zh' : 'en';
-      const finalLang = saved || browserLang;
+      const finalLang: Language = (saved === 'en' || saved === 'zh') ? saved : browserLang;
       
       setLanguage(finalLang);
       setTranslations(getTranslations(finalLang));

@@ -3,7 +3,7 @@
  * User Story 1.4: 页面集成 i18n - 语言切换组件
  */
 
-import { Language, getTranslations, Translations } from './config';
+import { Language, getTranslations, Translations } from '../i18n/config';
 
 interface LanguageSwitcherProps {
   currentLanguage: Language;

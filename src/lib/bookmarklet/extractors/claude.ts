@@ -79,7 +79,7 @@ function parseConversation(convId: string, convData: any): ClaudeConversation {
     }
     
     messages.push({
-      id: msg.id || msg.uuid || `msg_${Math.random().toString(36).substr(2, 9)}`,
+      id: msg.id || msg.uuid || `msg_${Math.random().toString(36).substring(2, 11)}`,
       role,
       content,
       timestamp: msg.created_at || msg.timestamp || Date.now(),
@@ -128,7 +128,7 @@ export function extractClaude(data: Record<string, string>): ClaudeExtractResult
           : parsed.conversations || parsed.chats || [parsed];
         
         for (const conv of convList) {
-          const convId = conv.id || conv.uuid || `conv_${Math.random().toString(36).substr(2, 9)}`;
+          const convId = conv.id || conv.uuid || `conv_${Math.random().toString(36).substring(2, 11)}`;
           conversations.push(parseConversation(convId, conv));
         }
       }
@@ -177,7 +177,7 @@ export function isClaudeFormat(data: Record<string, string>): boolean {
 /**
  * Create mock Claude data for testing
  */
-export function createMockClaudeData(): Record<string, string> {
+export function createMockClaudeData(): string {
   return JSON.stringify({
     conversations: [
       {

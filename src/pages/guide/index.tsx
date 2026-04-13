@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useTranslation } from '../../i18n/useTranslation';
-import { GUIDE_SECTIONS } from '../../lib/guide/navigation';
 
 export default function Guide() {
   const { t, isEnglish } = useTranslation();

@@ -19,7 +19,7 @@ export default function BookmarkletPage() {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('m_memory_locale');
       const browserLang = navigator.language?.startsWith('zh') ? 'zh' : 'en';
-      const lang = saved || browserLang;
+      const lang: Language = (saved === 'en' || saved === 'zh') ? saved : browserLang;
       setLanguage(lang);
       setTranslations(getTranslations(lang));
     }

@@ -6,7 +6,7 @@
 import { extractChatGPT, ChatGPTExtractResult, isChatGPTFormat } from './extractors/chatgpt';
 import { extractClaude, ClaudeExtractResult, isClaudeFormat } from './extractors/claude';
 import { extractGemini, GeminiExtractResult, isGeminiFormat } from './extractors/gemini';
-import { Platform, detectPlatform, getSupportedPlatforms } from '../platform-detector';
+import { Platform, detectPlatform, getSupportedPlatforms } from './platform-detector';
 
 export type UnifiedExtractResult = ChatGPTExtractResult | ClaudeExtractResult | GeminiExtractResult;
 
@@ -135,11 +135,10 @@ export interface UnifiedConversation {
 }
 
 export function normalizeToUnified(result: UnifiedExtractResult): UnifiedConversation[] {
-  if (!result.success || !result.sessions && !result.conversations) {
+  if (!result.success) {
     return [];
   }
   
-  // Handle ChatGPT format
   if ('sessions' in result && result.sessions) {
     return result.sessions.map(session => ({
       platform: result.platform,
@@ -153,7 +152,6 @@ export function normalizeToUnified(result: UnifiedExtractResult): UnifiedConvers
     }));
   }
   
-  // Handle Claude/Gemini format
   if ('conversations' in result && result.conversations) {
     return result.conversations.map(conv => ({
       platform: result.platform,
