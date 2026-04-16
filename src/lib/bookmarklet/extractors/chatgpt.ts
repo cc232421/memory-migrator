@@ -47,10 +47,17 @@ interface ChatGPTSessionMappingNode {
   };
 }
 
+interface ChatGPTSessionData {
+  title?: string;
+  create_time?: number;
+  update_time?: number;
+  mapping?: Record<string, ChatGPTSessionMappingNode>;
+}
+
 /**
  * Parse ChatGPT session from conversation data
  */
-function parseSession(sessionId: string, sessionData: Record<string, unknown>): ChatGPTSession {
+function parseSession(sessionId: string, sessionData: ChatGPTSessionData): ChatGPTSession {
   const messages: ChatGPTMessage[] = [];
   const mapping = (sessionData.mapping || {}) as Record<string, ChatGPTSessionMappingNode>;
 
