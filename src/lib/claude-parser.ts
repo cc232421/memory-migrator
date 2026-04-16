@@ -33,7 +33,7 @@ const CLAUDE_DATE_PATTERN = /(Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|Jan|Feb)\s
 export function parseClaudeText(text: string): ClaudeParseResult {
   try {
     if (!text || typeof text !== 'string') {
-      return { success: false, error: '输入内容为空' };
+      return { success: false, error: 'Input is empty' };
     }
 
     // Extract title from first line
@@ -71,7 +71,7 @@ export function parseClaudeText(text: string): ClaudeParseResult {
     }
 
     if (messages.length === 0) {
-      return { success: false, error: '未找到有效的对话消息' };
+      return { success: false, error: 'No valid conversation messages found' };
     }
 
     return {
@@ -85,7 +85,7 @@ export function parseClaudeText(text: string): ClaudeParseResult {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : '解析失败',
+      error: error instanceof Error ? error.message : 'Parsing failed',
     };
   }
 }
@@ -98,7 +98,7 @@ export function parseClaudeArray(
 ): ClaudeParseResult {
   try {
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return { success: false, error: '消息列表为空' };
+      return { success: false, error: 'Message list is empty' };
     }
 
     const parsedMessages: ClaudeMessage[] = messages
@@ -110,7 +110,7 @@ export function parseClaudeArray(
       }));
 
     if (parsedMessages.length === 0) {
-      return { success: false, error: '未找到有效消息' };
+      return { success: false, error: 'No valid messages found' };
     }
 
     return {

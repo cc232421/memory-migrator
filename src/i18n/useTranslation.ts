@@ -30,7 +30,7 @@ function detectBrowserLanguage(): Language {
   if (typeof window === 'undefined') return getDefaultLanguage();
   
   try {
-    const browserLang = navigator.language || (navigator as any).userLanguage || 'en';
+    const browserLang = navigator.language || ((navigator as { userLanguage?: string }).userLanguage) || 'en';
     
     // Check for Chinese
     if (browserLang.startsWith('zh')) {

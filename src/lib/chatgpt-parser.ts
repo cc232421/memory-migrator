@@ -24,6 +24,16 @@ export interface ParsingResult {
   error?: string;
 }
 
+interface ChatGPTMappingNode {
+  id?: string;
+  message?: {
+    id?: string;
+    role: string;
+    content?: { parts?: string[] };
+    create_time?: number;
+  };
+}
+
 /**
  * Extract message content from ChatGPT parts array
  */
@@ -56,7 +66,7 @@ export function parseChatGPTExport(rawData: any): ParsingResult {
     const mapping = rawData.mapping;
 
     for (const [msgId, msgData] of Object.entries(mapping)) {
-      const msg = msgData as any;
+      const msg = msgData as ChatGPTMappingNode;
       if (!msg.message) {
         continue;
       }
@@ -132,7 +142,7 @@ export function countMessages(data: any): { user: number; assistant: number; tot
   let user = 0;
   let assistant = 0;
 
-  for (const msg of Object.values(data.mapping) as any[]) {
+  for (const msg of Object.values(data.mapping) as ChatGPTMappingNode[]) {
     if (msg.message?.role === 'user') user++;
     else if (msg.message?.role === 'assistant') assistant++;
   }

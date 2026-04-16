@@ -37,15 +37,25 @@ function extractContent(parts: string[] | undefined): string {
   return parts.join('');
 }
 
+interface ChatGPTSessionMappingNode {
+  id?: string;
+  message?: {
+    id?: string;
+    role: string;
+    content?: { parts?: string[] };
+    create_time?: number;
+  };
+}
+
 /**
  * Parse ChatGPT session from conversation data
  */
-function parseSession(sessionId: string, sessionData: any): ChatGPTSession {
+function parseSession(sessionId: string, sessionData: Record<string, unknown>): ChatGPTSession {
   const messages: ChatGPTMessage[] = [];
-  const mapping = sessionData.mapping || {};
+  const mapping = (sessionData.mapping || {}) as Record<string, ChatGPTSessionMappingNode>;
 
   for (const [msgId, msgData] of Object.entries(mapping)) {
-    const msg = msgData as any;
+    const msg = msgData;
     
     if (!msg.message || !msg.message.role) {
       continue;
