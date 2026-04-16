@@ -45,36 +45,26 @@ jobs:
       - name: Build
         run: npm run build
 
-  # deploy:
-  #   needs: ci
-  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version-file: '.nvmrc'
-  #         cache: 'npm'
-  #
-  #     - name: Cache Next.js build
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: |
-  #           .next
-  #           node_modules/.cache
-  #         key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-nextjs-
-  #
-  #     - name: Install dependencies
-  #       run: npm ci
-  #
-  #     - name: Build
-  #       run: npm run build
-  #
-  #     - name: Deploy to Vercel
-  #       run: |
-  #         npm install -g vercel
-  #         vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }} --org=${{ secrets.VERCEL_ORG_ID }} --project=${{ secrets.VERCEL_PROJECT_ID }}
+  deploy:
+    needs: ci
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Vercel
+        run: |
+          npm install -g vercel
+          vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }} --org=${{ secrets.VERCEL_ORG_ID }} --project=${{ secrets.VERCEL_PROJECT_ID }}
